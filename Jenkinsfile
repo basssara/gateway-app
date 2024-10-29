@@ -2,10 +2,23 @@ pipeline {
     agent any
 
     stages {
+        stage("Setup") {
+            steps {
+                echo 'Checking for pnpm...'
+                sh '''
+                    if ! command -v pnpm &> /dev/null; then
+                        echo "pnpm not found, installing..."
+                        npm install -g pnpm
+                    else
+                        echo "pnpm found"
+                    fi
+                '''
+            }
+        }
+
         stage("Build") {
             steps {
                 echo 'Building...'
-                sh 'pnpm install'
                 sh 'pnpm build'
             }
         }
