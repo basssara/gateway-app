@@ -1,34 +1,70 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = "some-project"
+        DOCKER_REGISTRY_CREDENTIALS = 'docker-credentials-id'  // Jenkins credentials ID for Docker registry
+        KUBERNETES_NAMESPACE = "default"                       // Namespace in Kubernetes
+        KUBERNETES_DEPLOYMENT_NAME = "your-deployment-name"    // Name of the deployment in Kubernetes
+        PORT = 3001
+    }
+
     stages {
-        stage("Setup") {
+        stage('Checkout') {
             steps {
-                echo 'Checking for pnpm...'
-                sh '''
-                    if ! command -v pnpm &> /dev/null; then
-                        echo "pnpm not found, installing..."
-                        npm install -g pnpm
-                    else
-                        echo "pnpm found"
-                    fi
-                '''
+                echo 'Checking out source code...'
+                checkout scm
             }
         }
 
-        stage("Build") {
+        stage('Docker Build') {
             steps {
-                echo 'Building...'
-                sh 'pnpm build'
+                echo 'Building Docker image...'
+                sh 'docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .'
+                sh 'docker docker run -p ${PORT}:${PORT} -td ${DOCKER_IMAGE}'
             }
         }
 
-        stage("Deploy") {
-            steps {
-                echo "Deploying..."
-                sh "pm2 start dist/main.js --name some-project"
-                sh "pm2 status"
-            }
+//         stage('Docker Login') {
+//             steps {
+//                 echo 'Logging into Docker registry...'
+//                 script {
+//                     docker.withRegistry('', DOCKER_REGISTRY_CREDENTIALS) {
+//                         echo 'Logged in successfully'
+//                     }
+//                 }
+//             }
+//         }
+//
+//         stage('Push Docker Image') {
+//             steps {
+//                 echo 'Pushing Docker image to registry...'
+//                 script {
+//                     docker.withRegistry('', DOCKER_REGISTRY_CREDENTIALS) {
+//                         sh 'docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}'
+//                     }
+//                 }
+//             }
+//         }
+
+//         stage('Deploy to Kubernetes') {
+//             steps {
+//                 echo 'Deploying application to Kubernetes...'
+//                 sh '''
+//                     kubectl set image deployment/${KUBERNETES_DEPLOYMENT_NAME} \
+//                     ${KUBERNETES_DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} \
+//                     --namespace=${KUBERNETES_NAMESPACE} --record
+//                 '''
+//             }
+//         }
+    }
+
+    post {
+        success {
+            echo 'Build, push, and deployment to Kubernetes were successful!'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
