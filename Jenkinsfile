@@ -13,6 +13,8 @@ pipeline {
         stage("Deploy") {
             steps {
                 echo "Deploying..."
+                sh "pm2 start dist/main.js --name some-project"
+                sh "pm2 status"
             }
         }
     }
