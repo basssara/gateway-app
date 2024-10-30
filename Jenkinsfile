@@ -2,10 +2,7 @@ pipeline {
     agent any
 
     environment {
-            ENV_FILE = credentials('generated-key')
-    }
-
-    environment {
+        ENV_FILE = credentials('generated-key')
         DOCKER_IMAGE = "some-project"
         DOCKER_REGISTRY_CREDENTIALS = 'docker-credentials-id'  // Jenkins credentials ID for Docker registry
         KUBERNETES_NAMESPACE = "default"                       // Namespace in Kubernetes
