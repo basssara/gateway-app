@@ -32,45 +32,12 @@ pipeline {
                         docker stop ${DOCKER_IMAGE} || true
                         docker rm ${DOCKER_IMAGE} || true
                     '''
-                }
 
                 echo 'Starting Docker container...'
                 sh 'docker run --env-file=$ENV_FILE -p ${PORT}:${PORT} --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:latest'
+                }
             }
         }
-
-//         stage('Docker Login') {
-//             steps {
-//                 echo 'Logging into Docker registry...'
-//                 script {
-//                     docker.withRegistry('', DOCKER_REGISTRY_CREDENTIALS) {
-//                         echo 'Logged in successfully'
-//                     }
-//                 }
-//             }
-//         }
-//
-//         stage('Push Docker Image') {
-//             steps {
-//                 echo 'Pushing Docker image to registry...'
-//                 script {
-//                     docker.withRegistry('', DOCKER_REGISTRY_CREDENTIALS) {
-//                         sh 'docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}'
-//                     }
-//                 }
-//             }
-//         }
-
-//         stage('Deploy to Kubernetes') {
-//             steps {
-//                 echo 'Deploying application to Kubernetes...'
-//                 sh '''
-//                     kubectl set image deployment/${KUBERNETES_DEPLOYMENT_NAME} \
-//                     ${KUBERNETES_DEPLOYMENT_NAME}=${DOCKER_IMAGE}:${BUILD_NUMBER} \
-//                     --namespace=${KUBERNETES_NAMESPACE} --record
-//                 '''
-//             }
-//         }
     }
 
     post {
