@@ -27,6 +27,6 @@ COPY --from=build /app/node_modules node_modules
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/pnpm-lock.yaml pnpm-lock.yaml
 
-EXPOSE 3002
+EXPOSE 3001
 
 CMD ["node", "dist/main"]
