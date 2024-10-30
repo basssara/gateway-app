@@ -1,12 +1,8 @@
 pipeline {
     agent any
 
-    pipeline {
-        agent any
-
-        environment {
+    environment {
             ENV_FILE = credentials('generated-key')
-        }
     }
 
     environment {
