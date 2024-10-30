@@ -34,13 +34,21 @@ pipeline {
                     '''
 
                 echo 'Starting Docker container...'
-                sh 'docker run --env-file=$ENV_FILE -p ${PORT}:${PORT} --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:latest'
+                sh 'docker run -d --env-file=$ENV_FILE -p ${PORT}:${PORT} --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:latest'
                 }
             }
         }
     }
 
     post {
+        always {
+            echo 'Cleaning up Docker container...'
+
+            sh '''
+                docker stop ${DOCKER_IMAGE} || true
+                docker rm ${DOCKER_IMAGE} || true
+            '''
+        }
         success {
             echo 'Build, push, and deployment to Kubernetes were successful!'
         }
