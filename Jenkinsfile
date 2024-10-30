@@ -22,7 +22,11 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 sh 'docker build -t ${DOCKER_IMAGE} .'
+            }
+        }
 
+        stage('Docker Run Container') {
+            steps {
                 script {
                     sh '''
                         docker stop ${DOCKER_IMAGE} || true
@@ -30,6 +34,7 @@ pipeline {
                     '''
                 }
 
+                echo 'Starting Docker container...'
                 sh 'docker run --env-file=$ENV_FILE -p ${PORT}:${PORT} --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:latest'
             }
         }
