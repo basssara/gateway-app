@@ -22,7 +22,7 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 sh 'docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .'
-                sh 'docker docker run -p ${PORT}:${PORT} -td ${DOCKER_IMAGE}'
+                sh 'docker run -p ${PORT}:${PORT} -td ${DOCKER_IMAGE}'
             }
         }
 
