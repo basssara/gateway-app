@@ -21,8 +21,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .'
-                sh 'docker run -p ${PORT}:${PORT} -td ${DOCKER_IMAGE}:${BUILD_NUMBER}'
+                sh 'docker build -t ${DOCKER_IMAGE} .'
+                sh 'docker run -p ${PORT}:${PORT} --name ${DOCKER_IMAGE} ${DOCKER_IMAGE}:latest'
             }
         }
 
