@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    pipeline {
+        agent any
+
+        environment {
+            ENV_FILE = credentials('generated-key')
+        }
+    }
+
     environment {
         DOCKER_IMAGE = "some-project"
         DOCKER_REGISTRY_CREDENTIALS = 'docker-credentials-id'  // Jenkins credentials ID for Docker registry
