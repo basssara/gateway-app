@@ -17,7 +17,7 @@ export class UserController {
   }
 
   @Get('connection')
-  async list(): Promise<string> {
-    return 'Conncetion succeed'
+  async checkHealth(): Promise<string> {
+    return 'Conncetion succeed';
   }
 }
