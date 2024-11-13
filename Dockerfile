@@ -3,7 +3,6 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY src src
-COPY .env .env
 COPY .eslintrc.js .eslintrc.js
 COPY .prettierrc .prettierrc
 COPY nest-cli.json nest-cli.json
