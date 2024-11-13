@@ -15,4 +15,9 @@ export class UserController {
   async list(): Promise<any[]> {
     return this.service.list();
   }
+
+  @Get('connection')
+  async list(): Promise<string> {
+    return 'Conncetion succeed'
+  }
 }
