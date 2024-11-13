@@ -9,5 +9,5 @@ export const appConfig: AppConfig = {
   env: process.env.NODE_ENV,
   name: process.env.APP_NAME,
   host: process.env.APP_HOST,
-  port: parseInt(process.env.APP_PORT, 10),
+  port: process.env.APP_PORT ? parseInt(process.env.APP_PORT, 10) : undefined,
 };

@@ -3,6 +3,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY src src
+COPY .env .env
 COPY .eslintrc.js .eslintrc.js
 COPY .prettierrc .prettierrc
 COPY nest-cli.json nest-cli.json
@@ -26,6 +27,7 @@ COPY --from=build /app/dist dist
 COPY --from=build /app/node_modules node_modules
 COPY --from=build /app/package.json package.json
 COPY --from=build /app/pnpm-lock.yaml pnpm-lock.yaml
+COPY --from=build /app/.env .env
 
 EXPOSE 3001
 
