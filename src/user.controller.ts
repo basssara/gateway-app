@@ -18,6 +18,7 @@ export class UserController {
 
   @Get('connection')
   async checkHealth(): Promise<string> {
+    console.log('Checking health');
     return 'Conncetion succeed';
   }
 }
